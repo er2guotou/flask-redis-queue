@@ -4,7 +4,6 @@ services:
 
   web:
     build: .
-    image: web
     container_name: web
     ports:
       - '5004:5000'
@@ -18,7 +17,7 @@ services:
       - redis
 
   worker:
-    image: web
+    build: .
     command: python manage.py run_worker
     volumes:
       - .:/usr/src/app
@@ -26,13 +25,11 @@ services:
       - APP_SETTINGS=project.server.config.DevelopmentConfig
     depends_on:
       - redis
-
   redis:
     image: redis:4.0.11-alpine
 
   dashboard:
     build: ./project/dashboard
-    image: dashboard
     container_name: dashboard
     ports:
       - '9181:9181'
